@@ -11,16 +11,17 @@
 <body>
   <div layout:fragment="content" class="content">
     <form class="container" action="/articles/update" method="post" >
+      <input type="hidden" th:value="${dto.id}" th:field="${dto.id}"/>
       <div class="mb3">
         <label class="form-label">제목</label>
-        <input type="text" class="form-control" name="title">
+        <input th:field="${dto.title}" th:value="${dto.title}" type="text" class="form-control">
       </div>
       <div class="mb-3">
         <label class="form-label">내용</label>
-        <textarea class="form-control" row="3" name="content"></textarea>
+        <textarea th:field="${dto.content}" th:text="${dto.content}" class="form-control" row="3"></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-      <a href="">Go to Article List</a>
+      <button type="submit" class="btn btn-primary">저장</button>
+      <a href="/articles">Go to Article List</a>
     </form>
   </div>
 </body>
