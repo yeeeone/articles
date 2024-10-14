@@ -12,9 +12,11 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     properties:
       hibernate:
         show_sql: true
         format_sql: true
 
+server:
+  port: 8081  # Or any other available port
