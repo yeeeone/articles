@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org" xmlns:layout="www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+<meta charset="UTF-8">
+<title>test</title>
+<!--  전체 적용될 css  -->
+<th:block layout:fragment="css"></th:block>
+<!--  전체 적용될 스크립트  -->
+<th:block layout:fragment="script"></th:block>
+
+<!-- 작업 영역 -->
+<body>
+<div layout:fragment="content" class="content">
+  <h1>학사관리 프로그램</h1>
+  <br>
+  <h4 class="lh-lg">본 프로그램은 학생정보와 성적정보 데이터베이스를 구축하고 성적관리 프로그램을 작성하는 프로그램입니다.</h4>
+  <br>
+  <h4>많이 이용해 주세요.</h4>
+</div>
+</body>
+</html>
