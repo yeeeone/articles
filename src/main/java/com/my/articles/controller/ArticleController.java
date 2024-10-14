@@ -1,45 +1,70 @@
 package com.my.articles.controller;
 
+import com.my.articles.dto.ArticleDTO;
+import com.my.articles.service.ArticleService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("articles")
+@Slf4j
 public class ArticleController {
+    @Autowired
+    ArticleService articleService;
+
     @GetMapping("")
-    public String showAllArticles() {
+    public String showAllArticles(Model model) {
+        List<ArticleDTO> articles = articleService.showAllArticles();
+        log.info("### article controller - articles :" + articles);
+        model.addAttribute("list", articles);
         return "/articles/show-all";
     }
 
     @GetMapping("new")
-    public String newArticle() {
+    public String newArticle(Model model) {
+        model.addAttribute("dto", new ArticleDTO());
         return "/articles/new";
     }
 
     @PostMapping("create")
-    private String createArticle() {
-        return "redirect:articles";
+    private String createArticle(@ModelAttribute("dto") ArticleDTO dto) {
+        log.info("### get new article : " + dto);
+        articleService.addArticle(dto);
+        return "redirect:/articles";
     }
 
     @GetMapping("{id}")
-    public String showOneArticle() {
+    public String showOneArticle(@PathVariable("id") Long id, Model model) {
+        log.info("### article id: "+id);
+        ArticleDTO article = articleService.findOneArticle(id);
+        log.info("### article controller - article :" + article);
+        model.addAttribute("dto", article);
         return "/articles/show";
     }
 
     @GetMapping("{id}/update")
-    public String viewUpdateArticle() {
+    public String viewUpdateArticle(@PathVariable("id") Long id, Model model) {
+        //원래 게시글 내용 출력
+        model.addAttribute("dto", articleService.findOneArticle(id));
         return "/articles/update";
     }
 
     @PostMapping("update")
-    public String updateArticle() {
-        return "redirect:articles";
+    public String updateArticle(@ModelAttribute("dto") ArticleDTO dto) {
+        log.info("### updated article : " + dto);
+        articleService.updateArticle(dto);
+        return "redirect:/articles";
     }
 
     @GetMapping("{id}/delete")
-    public String deleteArticle() {
-        return "redirect:articles";
+    public String deleteArticle(@PathVariable("id") Long id) {
+        log.info("### delete article id: "+id);
+        articleService.deleteArticle(id);
+        return "redirect:/articles";
     }
 }
