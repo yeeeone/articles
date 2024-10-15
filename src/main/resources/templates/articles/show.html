@@ -10,6 +10,14 @@
 <!-- 작업 영역 -->
 <body>
   <div layout:fragment="content" class="content">
+
+    <div th:unless="${msg == null}">
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong th:text="${msg}"></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+
     <table class="table m-2">
       <thead>
       <tr>
@@ -26,8 +34,8 @@
       </tr>
       </tbody>
     </table>
-    <a th:href="@{'/articles/' + ${dto.id} + '/update'}" class="btn btn-primary">Edit</a>
-    <a th:href="@{'/articles/' + ${dto.id} + '/delete'}" id="article-delete" class="btn btn-danger">Delete</a>
+    <a th:href="@{/articles/{id}/update(id=${dto.id})}" class="btn btn-primary">Edit</a>
+    <a th:href="@{/articles/{id}/delete(id=${dto.id})}" id="article-delete" class="btn btn-danger">Delete</a>
     <a href="/articles">Go to Article List</a>
     <br><br>
     <div class="card m-2">

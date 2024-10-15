@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -32,9 +33,10 @@ public class ArticleController {
     }
 
     @PostMapping("create")
-    private String createArticle(@ModelAttribute("dto") ArticleDTO dto) {
+    private String createArticle(ArticleDTO dto, RedirectAttributes redirectAttributes) {
         log.info("### get new article : " + dto);
         articleService.addArticle(dto);
+        redirectAttributes.addFlashAttribute("msg", "새로운 게시글이 등록되었습니다.");
         return "redirect:/articles";
     }
 
@@ -55,16 +57,19 @@ public class ArticleController {
     }
 
     @PostMapping("update")
-    public String updateArticle(@ModelAttribute("dto") ArticleDTO dto) {
+    public String updateArticle(ArticleDTO dto, RedirectAttributes redirectAttributes) {
         log.info("### updated article : " + dto);
         articleService.updateArticle(dto);
-        return "redirect:/articles";
+        String url = "redirect:" + dto.getId();
+        redirectAttributes.addFlashAttribute("msg", "게시글이 수정되었습니다.");
+        return url;
     }
 
     @GetMapping("{id}/delete")
-    public String deleteArticle(@PathVariable("id") Long id) {
+    public String deleteArticle(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         log.info("### delete article id: "+id);
         articleService.deleteArticle(id);
+        redirectAttributes.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
         return "redirect:/articles";
     }
 }
