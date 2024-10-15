@@ -1,6 +1,8 @@
 package com.my.articles.controller;
 
 import com.my.articles.dto.ArticleDTO;
+import com.my.articles.dto.CommentDTO;
+import com.my.articles.entity.Comment;
 import com.my.articles.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,7 @@ public class ArticleController {
         ArticleDTO article = articleService.findOneArticle(id);
         log.info("### article controller - article :" + article);
         model.addAttribute("dto", article);
+        model.addAttribute("newComment", new CommentDTO());
         return "/articles/show";
     }
 
@@ -71,5 +74,46 @@ public class ArticleController {
         articleService.deleteArticle(id);
         redirectAttributes.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
         return "redirect:/articles";
+    }
+
+    //댓글 추가
+    @PostMapping("addComment")
+    public String addComment(@ModelAttribute("newComment") CommentDTO newComment, @RequestParam("id") Long id) {
+        log.info("### new comment : " + newComment + "article id : " + id);
+
+        ArticleDTO article = articleService.findOneArticle(id);
+        newComment.setArticle(ArticleDTO.fromDTO(article));
+        newComment.setId(null);
+        articleService.addComment(newComment);
+
+        article.getComments().add(CommentDTO.fromDTO(newComment));
+        log.info("### add comment to article : " + article.getComments());
+        articleService.updateArticle(article);
+        String url = "redirect:" + article.getId();
+        return url;
+    }
+
+    //댓글 수정
+    @GetMapping("{id}/{commentId}/update")
+    public String viewUpdateComment() {
+
+        String url = "redirect:";
+        return url;
+    }
+
+    @PostMapping("updateComment")
+    public String updateComment() {
+        String url = "redirect:";
+        return url;
+    }
+
+    //댓글 삭제
+    @GetMapping("{id}/{commentId}/delete")
+    public String deleteComment(@PathVariable("id") Long id, @PathVariable("commentId") Long commentId) {
+        log.info("### delete comment id : " + commentId);
+        articleService.deleteComment(commentId);
+
+        String url = "redirect:";
+        return url;
     }
 }

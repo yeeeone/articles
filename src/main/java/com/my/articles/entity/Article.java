@@ -4,11 +4,16 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "comments")
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +22,7 @@ public class Article {
     private String title;
     @Column(nullable = false, length = 1000)
     private String content;
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 }

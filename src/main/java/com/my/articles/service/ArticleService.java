@@ -2,6 +2,7 @@ package com.my.articles.service;
 
 import com.my.articles.dao.ArticleDAO;
 import com.my.articles.dto.ArticleDTO;
+import com.my.articles.dto.CommentDTO;
 import com.my.articles.entity.Article;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -50,5 +51,13 @@ public class ArticleService {
 
     public void updateArticle(ArticleDTO dto) {
         dao.updateArticle(dto);
+    }
+
+    public void addComment(CommentDTO newComment) {
+        dao.addComment(CommentDTO.fromDTO(newComment));
+    }
+
+    public void deleteComment(Long commentId) {
+        dao.deleteComment(commentId);
     }
 }

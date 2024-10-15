@@ -18,5 +18,5 @@ spring:
         show_sql: true
         format_sql: true
 
-server:
-  port: 8081  # Or any other available port
+#server:
+#  port: 8081  # Or any other available port
