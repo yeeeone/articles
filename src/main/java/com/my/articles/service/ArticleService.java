@@ -53,18 +53,4 @@ public class ArticleService {
     public void updateArticle(ArticleDTO dto) {
         dao.updateArticle(dto);
     }
-
-    public void addComment(CommentDTO newComment) {
-        dao.addComment(CommentDTO.fromDTO(newComment));
-    }
-
-    public void deleteComment(Long id, Long commentId) {
-        dao.deleteComment(id, commentId);
-    }
-
-    public CommentDTO findOneComment(Long commentId) {
-        Comment comment = dao.findOneComment(commentId);
-        if(ObjectUtils.isEmpty(comment)) return null;
-        return CommentDTO.fromEntity(comment);
-    }
 }
