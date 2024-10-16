@@ -1,7 +1,9 @@
 package com.my.articles.dao;
 
 import com.my.articles.dto.ArticleDTO;
+import com.my.articles.dto.CommentDTO;
 import com.my.articles.entity.Article;
+import com.my.articles.entity.Comment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import jakarta.persistence.Query;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -50,5 +53,27 @@ public class ArticleDAO {
         Article article = em.find(Article.class, dto.getId());
         article.setTitle(dto.getTitle());
         article.setContent(dto.getContent());
+        article.setComments(dto.getComments());
+    }
+
+    public void addComment(Comment comment) {
+        log.info("### article DAO - add comment : " + comment);
+        em.persist(comment);
+    }
+
+    public void deleteComment(Long id, Long commentId) {
+        Article article = em.find(Article.class, id);
+        Comment comment = em.find(Comment.class, commentId);
+        log.info("### delete comment : " + comment);
+        article.getComments().remove(comment);
+        em.remove(comment);
+    }
+
+    public Comment findOneComment(Long commentId) {
+        String sql = "SELECT c FROM Comment c WHERE c.id = :id";
+        TypedQuery<Comment> query = em.createQuery(sql, Comment.class).setParameter("id", commentId);
+        Comment comment = query.getSingleResult();
+        log.info("### article DAO - comment :" + comment.toString());
+        return comment;
     }
 }

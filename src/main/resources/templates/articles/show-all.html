@@ -40,17 +40,17 @@
     <a href="/articles/new" class="btn btn-success">New Article</a>
 
     <script th:inline="javascript">
-      $(function(){
-          //id 역순으로 정렬
-          let rows = $('table').find('tr:gt(0)').toArray().sort(function(a, b) {
-                   let idA = parseInt($(a).find('.articleId').text()) || 0;
-                   let idB = parseInt($(b).find('.articleId').text()) || 0;
-                   return idB - idA;  // 내림차순 정렬
-               });
-               $.each(rows, function(index, row) {
-                   $('table').append(row);
-               });
-      });
+<!--      $(function(){-->
+<!--          //id 역순으로 정렬-->
+<!--          let rows = $('table').find('tr:gt(0)').toArray().sort(function(a, b) {-->
+<!--                   let idA = parseInt($(a).find('.articleId').text()) || 0;-->
+<!--                   let idB = parseInt($(b).find('.articleId').text()) || 0;-->
+<!--                   return idB - idA;  // 내림차순 정렬-->
+<!--               });-->
+<!--               $.each(rows, function(index, row) {-->
+<!--                   $('table').append(row);-->
+<!--               });-->
+<!--      });-->
     </script>
   </div>
 </body>

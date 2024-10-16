@@ -1,6 +1,8 @@
 package com.my.articles.controller;
 
 import com.my.articles.dto.ArticleDTO;
+import com.my.articles.dto.CommentDTO;
+import com.my.articles.entity.Comment;
 import com.my.articles.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,7 @@ public class ArticleController {
         ArticleDTO article = articleService.findOneArticle(id);
         log.info("### article controller - article :" + article);
         model.addAttribute("dto", article);
+        model.addAttribute("newComment", new CommentDTO());
         return "/articles/show";
     }
 
@@ -72,4 +75,5 @@ public class ArticleController {
         redirectAttributes.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
         return "redirect:/articles";
     }
+
 }
