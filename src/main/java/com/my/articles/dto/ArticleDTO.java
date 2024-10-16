@@ -17,15 +17,19 @@ public class ArticleDTO {
     private Long id;
     private String title;
     private String content;
-    private List<Comment> comments;
+    private List<CommentDTO> comments;
 
     //Entity to DTO
     public static ArticleDTO fromEntity(Article article) {
-        return new ArticleDTO(article.getId(), article.getTitle(), article.getContent(), article.getComments());
+        return new ArticleDTO(article.getId(), article.getTitle(), article.getContent(), article.getComments().stream().map(x -> CommentDTO.fromEntity(x)).toList());
     }
 
     //DTO to Entity
     public static Article fromDTO(ArticleDTO dto) {
-        return new Article(dto.getId(), dto.getTitle(), dto.getContent(), dto.getComments());
+        Article article = new Article();
+        article.setId(dto.getId());
+        article.setTitle(dto.getTitle());
+        article.setContent(dto.getContent());
+        return article;
     }
 }

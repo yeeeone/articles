@@ -61,9 +61,19 @@ public class ArticleDAO {
         em.persist(comment);
     }
 
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long id, Long commentId) {
+        Article article = em.find(Article.class, id);
         Comment comment = em.find(Comment.class, commentId);
         log.info("### delete comment : " + comment);
+        article.getComments().remove(comment);
         em.remove(comment);
+    }
+
+    public Comment findOneComment(Long commentId) {
+        String sql = "SELECT c FROM Comment c WHERE c.id = :id";
+        TypedQuery<Comment> query = em.createQuery(sql, Comment.class).setParameter("id", commentId);
+        Comment comment = query.getSingleResult();
+        log.info("### article DAO - comment :" + comment.toString());
+        return comment;
     }
 }

@@ -39,27 +39,17 @@
     <a href="/articles">Go to Article List</a>
     <br><br>
     <!--  댓글  -->
-    <div class="card m-2" th:each="comment : ${dto.comments}">
+    <div class="card m-2" th:each="comment : ${dto.comments}" th:object = ${comment}>
       <div class="card-header">
-        <span th:text="${comment.nickname}">Featured</span>
+        <span th:text="*{nickname}">Featured</span>
         <a th:href="@{/articles/{id}/{commentId}/update(id=${dto.id}, commentId=${comment.id})}" class="btn btn-sm btn-outline-primary">수정</a>
         <a th:href="@{/articles/{id}/{commentId}/delete(id=${dto.id}, commentId=${comment.id})}" class="btn btn-sm btn-outline-primary" id="comment-delete-btn">삭제</a>
       </div>
       <div class="card-body">
-        <p class="card-text" th:text="${comment.body}">With supporting text below as a natural lead-in to additional content.</p>
+        <p class="card-text" th:text="*{body}">With supporting text below as a natural lead-in to additional content.</p>
       </div>
     </div>
 
-<!--    <div class="card m-2">-->
-<!--      <div class="card-header">-->
-<!--        <span>Featured</span>-->
-<!--        <a class="btn btn-sm btn-outline-primary">수정</a>-->
-<!--        <a class="btn btn-sm btn-outline-primary" id="comment-delete-btn">삭제</a>-->
-<!--      </div>-->
-<!--      <div class="card-body">-->
-<!--        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
-<!--      </div>-->
-<!--    </div>-->
 
     <form action="/articles/addComment" method="post">
       <input type="hidden" th:value="${dto.id}" name="id">

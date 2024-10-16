@@ -76,44 +76,4 @@ public class ArticleController {
         return "redirect:/articles";
     }
 
-    //댓글 추가
-    @PostMapping("addComment")
-    public String addComment(@ModelAttribute("newComment") CommentDTO newComment, @RequestParam("id") Long id) {
-        log.info("### new comment : " + newComment + "article id : " + id);
-
-        ArticleDTO article = articleService.findOneArticle(id);
-        newComment.setArticle(ArticleDTO.fromDTO(article));
-        newComment.setId(null);
-        articleService.addComment(newComment);
-
-        article.getComments().add(CommentDTO.fromDTO(newComment));
-        log.info("### add comment to article : " + article.getComments());
-        articleService.updateArticle(article);
-        String url = "redirect:" + article.getId();
-        return url;
-    }
-
-    //댓글 수정
-    @GetMapping("{id}/{commentId}/update")
-    public String viewUpdateComment() {
-
-        String url = "redirect:";
-        return url;
-    }
-
-    @PostMapping("updateComment")
-    public String updateComment() {
-        String url = "redirect:";
-        return url;
-    }
-
-    //댓글 삭제
-    @GetMapping("{id}/{commentId}/delete")
-    public String deleteComment(@PathVariable("id") Long id, @PathVariable("commentId") Long commentId) {
-        log.info("### delete comment id : " + commentId);
-        articleService.deleteComment(commentId);
-
-        String url = "redirect:";
-        return url;
-    }
 }
