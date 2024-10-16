@@ -53,7 +53,6 @@ public class ArticleDAO {
         Article article = em.find(Article.class, dto.getId());
         article.setTitle(dto.getTitle());
         article.setContent(dto.getContent());
-        article.setComments(dto.getComments());
     }
 
     public void addComment(Comment comment) {
