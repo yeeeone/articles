@@ -27,7 +27,7 @@
       </thead>
       <tbody>
       <div>
-        <tr th:each="article : ${list}" th:object="${article}">
+        <tr th:each="article : ${articles}" th:object="${article}">
           <th th:text="*{id}" scope="row" class="articleId">1</th>
           <td>
             <a th:text="*{title}" th:href="@{/articles/{id}(id=*{id})}" class="title">제목111 </a>
@@ -37,6 +37,27 @@
       </div>
       </tbody>
     </table>
+    <nav aria-label="..." class="align-middle">
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${articles.number} <= 0 ? 'disabled' ">
+          <a class="page-link" th:href="@{/articles(page=${articles.number-1})}">Previous</a>
+        </li>
+        <th:block th:each="pageNumber : ${pageBars}">
+          <li class="page-item">
+            <a class="page-link" th:href="@{/articles(page=${pageNumber})}" th:text="${pageNumber + 1}">1</a>
+          </li>
+<!--          <li class="page-item active" aria-current="page">-->
+<!--            <a class="page-link" href="#">2</a>-->
+<!--          </li>-->
+<!--          <li class="page-item">-->
+<!--            <a class="page-link" href="#">3</a>-->
+<!--          </li>-->
+        </th:block>
+        <li class="page-item" th:classappend="${articles.number + 1} == ${articles.totalPages} ? 'disabled'">
+          <a class="page-link" th:href="@{/articles(page=${articles.number+1})}">Next</a>
+        </li>
+      </ul>
+    </nav>
     <a href="/articles/new" class="btn btn-success">New Article</a>
 
     <script th:inline="javascript">

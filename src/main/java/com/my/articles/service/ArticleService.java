@@ -5,6 +5,7 @@ import com.my.articles.dto.ArticleDTO;
 import com.my.articles.dto.CommentDTO;
 import com.my.articles.entity.Article;
 import com.my.articles.entity.Comment;
+import com.my.articles.repository.ArticleRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
@@ -13,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.groovy.runtime.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -26,6 +29,8 @@ import java.util.List;
 public class ArticleService {
     @Autowired
     ArticleDAO dao;
+    @Autowired
+    ArticleRepository articleRepository;
 
     public List<ArticleDTO> showAllArticles() {
         List<Article> articles = dao.getAllArticle();
@@ -52,5 +57,10 @@ public class ArticleService {
 
     public void updateArticle(ArticleDTO dto) {
         dao.updateArticle(dto);
+    }
+
+    public Page<ArticleDTO> getArticlePage(Pageable pageable) {
+        Page<Article> articles = articleRepository.findAll(pageable);
+        return articles.map(x -> ArticleDTO.fromEntity(x));
     }
 }
