@@ -9,6 +9,9 @@
     userid : <input type="text" id="userid"/><br>
     password : <input type="text" id="password"/><br>
     <button id="btn-api">Send</button><br>
+    <button id="btn-response">Response</button><br>
+    <button id="btn-array">Array</button><br>
+    <button id="btn-delete">Delete</button><br>
 
     <script th:inline="javascript">
       $(document).ready(function(){
@@ -34,7 +37,57 @@
                     },
               })
           });
-
+          $("#btn-response").on("click", function(){
+              $.ajax({
+                    url : "getResponse",
+                    type : "post",
+                    datatype : "json",
+                    success : function(data, status, xhr){
+                        console.log(data);
+                    },
+                    error : function(xhr, status, error){
+                        console.log(error);
+                    },
+              })
+          });
+          $("#btn-array").on("click", function(){
+              let user1 = {
+                            'userid' : $("#userid").val(),
+                            'password' : $("#password").val(),
+                        }
+              let user2 = {
+                            'userid' : 'kim',
+                            'password' : '0000',
+                        }
+              $.ajax({
+                    url : "apiPostArrayTest",
+                    type : "post",
+                    datatype : "json",
+                    headers : {
+                        "Content-Type" : "application/json",
+                    },
+                    data : JSON.stringify([user1, user2]),
+                    success : function(data, status, xhr){
+                        console.log(data);
+                    },
+                    error : function(xhr, status, error){
+                        console.log(error);
+                    },
+              })
+          });
+          $("#btn-delete").on("click", function(){
+              $.ajax({
+                    url : "delete",
+                    type : "delete",
+                    datatype : "json",
+                    success : function(data, status, xhr){
+                        console.log(data);
+                    },
+                    error : function(xhr, status, error){
+                        console.log(error);
+                    },
+              })
+          });
       });
     </script>
 </body>

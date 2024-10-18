@@ -1,10 +1,10 @@
 package com.my.articles.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginDTO {
     private String userid;
     private String password;
