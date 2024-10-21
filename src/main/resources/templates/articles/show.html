@@ -28,7 +28,7 @@
       </thead>
       <tbody>
       <tr >
-        <th th:text="${dto.id}" scope="row" >1</th>
+        <th th:text="${dto.id}" scope="row" id="articleId">1</th>
         <td th:text="${dto.title}">제목111</td>
         <td th:text="${dto.content}">내용 1111</td>
       </tr>
@@ -70,32 +70,69 @@
 
     <script th:inline="javascript">
         $(document).ready(function(){
-            //눌린 삭제 버튼 찾기
-            $(document).on("click", "#comment-delete-btn", function(){
+            // 눌린 삭제 버튼 찾기
+            $(document).on("click", "#comment-delete-btn", function() {
                 let commentId = $(this).next().val();
-                location.href = '/articles/comments/' + commentId;
-            });
+                let articleId = [[${dto.id}]];
+                let sendUrl = '/api/comments/' + commentId;
 
-            //수정 버튼 눌렀을 때 동작
-            $(document).on("click","#comment-update-btn", function(){
+                $.ajax({
+                    url: sendUrl,
+                    dataType : 'json',
+                    headers : {"Content-Type" : "application/json"},
+                    type: "delete",
+                    success: function(data, status, xhr) {
+                        alert(data.message);
+                        location.href = articleId;
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error deleting comment: " + error);
+                    }
+                });
+            })
+
+            // 수정 버튼 눌렀을 때 동작
+            $(document).on("click", "#comment-update-btn", function(){
                 let commentId = $(this).next().next().val();
-                location.href = "/articles/comments/view/"+commentId;
+                location.href = "/articles/comments/view/" + commentId;
             });
 
             // 댓글 추가
-            $("#comment-create-btn").on("click",function(){
+            $("#comment-create-btn").on("click", function(event){
+                let articleId = [[${dto.id}]];
                 event.preventDefault();
-                if($("#new-comment-nickname").val()==""){
+                if($("#new-comment-nickname").val() == ""){
                     alert('닉네임을 입력하세요.');
                     $("#new-comment-nickname").focus();
-
-                    if($("#new-comment-body").val()==""){
-                        alert('댓글 내용을 입력하세요.');
-                        $("#new-comment-body").focus();
-                    }
                     return;
                 }
-                $("form").submit();
+
+                if($("#new-comment-body").val() == ""){
+                    alert('댓글 내용을 입력하세요.');
+                    $("#new-comment-body").focus();
+                    return;
+                }
+
+<!--                $("form").submit();-->
+                let sendUrl = `/api/articles/${articleId}/comments`;
+                let newComment = {
+                    'nickname' : $("#new-comment-nickname").val(),
+                    'body' : $("#new-comment-body").val()
+                };
+                $.ajax({
+                    url: sendUrl,
+                    dataType : 'json',
+                    data : JSON.stringify(newComment),
+                    headers : {"Content-Type" : "application/json"},
+                    type: "post",
+                    success: function(data, status, xhr) {
+                        alert(data.message);
+                        location.href = articleId;
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error deleting comment: " + error);
+                    }
+                });
             });
         });
     </script>

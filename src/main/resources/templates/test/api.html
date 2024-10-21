@@ -77,7 +77,7 @@
           });
           $("#btn-delete").on("click", function(){
               $.ajax({
-                    url : "delete",
+                    url : "deleteCommentApi",
                     type : "delete",
                     datatype : "json",
                     success : function(data, status, xhr){
