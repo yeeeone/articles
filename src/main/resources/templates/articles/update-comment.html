@@ -27,13 +27,30 @@
       $(document).ready(function(){
             // 댓글 수정
             $("#comment-update-btn").on("click",function(){
+                let commentId = [[*{id}]];
+                let articleId = [[${articleId}]];
+
                 event.preventDefault();
-                if($("#update-comment-body").val()==""){
-                    alert('댓글 내용을 입력하세요.');
-                    $("#new-comment-body").focus();
-                    return;
-                }
-                $("form").submit();
+<!--                $("form").submit();-->
+                let sendUrl = `/api/comments/[[*{id}]]`;
+                let updateComment = {
+                    'nickname' : $("#update-comment-nickname").val(),
+                    'body' : $("#update-comment-body").val()
+                };
+                $.ajax({
+                    url: sendUrl,
+                    dataType : 'json',
+                    data : JSON.stringify(updateComment),
+                    headers : {"Content-Type" : "application/json"},
+                    type: "patch",
+                    success: function(data, status, xhr) {
+                        alert(data.message);
+                        location.href = `/articles/[[${articleId}]]`;
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error deleting comment: " + error);
+                    }
+                });
             });
         });
     </script>
